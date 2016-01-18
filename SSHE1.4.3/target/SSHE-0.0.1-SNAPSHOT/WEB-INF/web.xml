@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>LH-SSHE-DEMO</display-name>
+	<description>Struts2+Spring3+Hibernate4+EasyUI1.4</description>
+	<!-- spring配置文件位置 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<!-- ,classpath:spring-hibernate.xml -->
+		<param-value>classpath:spring.xml,classpath:spring-hibernate.xml,classpath*:spring-druid.xml,classpath*:spring-javamelody.xml</param-value>
+	</context-param>
+	<!-- 使用 Compress begin-->
+	<filter>
+		<filter-name>Compress</filter-name>
+		<filter-class>lh.util.framework.gzip.GZIPFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Compress</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+    	<filter-name>Compress</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping> 
+	<filter-mapping>
+    	<filter-name>Compress</filter-name>
+		<url-pattern>*.html</url-pattern>
+	</filter-mapping>
+    <filter-mapping>
+	<filter-name>Compress</filter-name>
+		<url-pattern>*.js</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+    	<filter-name>Compress</filter-name>
+    	<url-pattern>*.css</url-pattern>
+	</filter-mapping>
+	<!-- 使用 Compress end -->
+	<!-- openSessionInView配置 -->
+	<filter>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+		<init-param>
+			<param-name>singleSession</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<!-- 日志过滤器配置 -->
+	<filter>
+		<filter-name>logFilter</filter-name>
+		<filter-class>lh.util.LogFilter</filter-class>
+	</filter>
+	<!-- Struts2配置 -->
+	<filter>
+		<filter-name>dispatcherFilter</filter-name>
+		 <!-- 改为自己的过滤器 -->
+        <filter-class>
+            lh.filter.RequestParseWrapper
+        </filter-class>
+		<!--  
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+		-->
+		<!-- 配置action包参数 ，指定Action类所在的包空间。逗号分割
+		<init-param>  
+	        <param-name>actionPackages</param-name>  
+	        <param-value>lh.action</param-value> 
+	        <param-value>lh.adminshop</param-value>  
+	    </init-param>  
+	    -->
+	    
+	</filter>
+	<filter id="filterdispatcher">
+		<filter-name>Struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	<!-- openSessionInViewFilter的配置要放在所有filter-mapping的前边否则不生效 -->
+	<!-- 并且url-pattern要和struts2 的一样 -->
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<!-- 日志过滤器mapping -->
+	<filter-mapping>
+		<filter-name>
+			logFilter
+		</filter-name>
+		<!--配置过滤的范围   后缀符合即过滤  此处为全部过滤-->
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>dispatcherFilter</filter-name>
+		<!-- 
+		这样写的话，只会访问后缀为.action的文件，所以要想添加jsp访问的话，要不然多加一个过滤器映射，要不然就改成/*
+		 -->
+		<!-- 只过滤jsps文件夹下文件 
+		-->
+		<url-pattern>/jsps/*</url-pattern>
+		<!-- 过滤所有action文件 
+		<url-pattern>*.action</url-pattern>
+		-->
+		<url-pattern>*.action</url-pattern>
+		<!-- 过滤所有jsp文件 -->
+		<!-- 
+		<url-pattern>*.jsp</url-pattern>
+		-->
+		<!-- 过滤servlet/plupload -->
+		<!-- 
+		<url-pattern>/plupload</url-pattern>
+		-->
+		<!--  
+		<url-pattern>/*</url-pattern>
+		-->
+	</filter-mapping>
+	<filter-mapping> 
+		<filter-name>Struts2</filter-name>
+		<url-pattern>*.action</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>	
+		<dispatcher>INCLUDE</dispatcher>		
+	</filter-mapping>
+	<!-- spring监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- 修复数据库监听器 要在spring监听器后边 -->
+	<!-- 
+	<listener>
+		<listener-class>lh.listener.RepairListener</listener-class>
+	</listener>
+	 -->
+	<!-- 用户上下线监听器 -->
+	<listener>
+		<listener-class>lh.util.OnlineListener</listener-class>
+	</listener>
+	<!-- plUpload上传 -->
+	<servlet>
+		<servlet-name>PlUpload</servlet-name>
+		<servlet-class>lh.util.uploadServerlet.PlUploadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PlUpload</servlet-name>
+		<url-pattern>/plupload</url-pattern>
+	</servlet-mapping>
+	<!-- cosUpload上传 -->
+	<servlet>
+		<servlet-name>CosUpload</servlet-name>
+		<servlet-class>lh.util.uploadServerlet.CosUploadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CosUpload</servlet-name>
+		<url-pattern>/cosUpload</url-pattern>
+	</servlet-mapping>
+	<!-- 配置session超时时间，单位分钟 -->
+	<session-config>
+		<session-timeout>15</session-timeout>
+	</session-config>
+	<!-- 使用  http://localhost:8080/SSHE/monitoring访问 -->
+	<!-- 添加javamelody监控 -->
+	<filter>
+		<filter-name>monitoring</filter-name>
+		<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>monitoring</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- javamelody监听器 -->
+	<listener>
+		<listener-class>net.bull.javamelody.SessionListener</listener-class>
+	</listener>
+	<!-- druid数据源Web监控配置 -->
+	<!-- 使用 http://localhost:8080/SSHE/druid/index.html 访问 -->
+	<filter>
+		<filter-name>druidWebStat</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>/css/*,/style/*,/jslib/*,*.js,*.css,/druid*,/attached/*,/uploadFile/*,*.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>principalSessionName</param-name>
+			<param-value>sessionInfo</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>druidWebStat</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- druid监控页面，使用${pageContext.request.contextPath}/druid/index.html访问 -->
+	<servlet>
+		<servlet-name>druidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>druidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
+	<!-- 配置freemarker 开始
+	<servlet>
+		<servlet-name>JspSupportServlet</servlet-name>  
+	 	<servlet-class>  
+	  		org.apache.struts2.views.JspSupportServlet  
+	 	</servlet-class>  
+	-->
+	 	<!--配置JspSupportServlet自启动
+	 	<load-on-startup>1</load-on-startup>  
+	</servlet>  
+	 	-->  
+	<!-- 配置freemarker 结束 -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

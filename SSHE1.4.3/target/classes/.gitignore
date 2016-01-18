@@ -1,0 +1,15 @@
+/config.properties
+/initDataBase.xml
+/lh
+/log4j.properties
+/spring-druid.xml
+/spring-hibernate.xml
+/spring-javamelody.xml
+/spring.xml
+/struts-adminshop.xml
+/struts-common.xml
+/struts-public.xml
+/struts-shop.xml
+/struts.xml
+/struts2.properties
+/xwork-conversion.properties

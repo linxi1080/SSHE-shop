@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>role.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+    <script type="text/javascript">
+		$(function() {
+			var datagrid = $('#jsp_admin_role_datagrid1');
+			//var searchForm = $('#jsp_admin_role_searchForm');
+			admin_role_obj = {
+						editRow : undefined,//控制第一行没有保存不能继续添加
+						search : function() {
+							datagrid.datagrid('load', $
+									.serializeObject(searchForm.form()));
+						},
+						clean : function() {
+							searchForm.find('input').val('');
+							datagrid.datagrid('load', {});
+						},
+						add : function() {
+							addForm.find('input').val('');
+							addForm.form('load',{modifydatetime:'',pwd:'123456'});
+							addDialog.dialog('open');
+						},
+						remove : function() {
+							var rows = datagrid.datagrid("getChecked"); //选择了checkbox的行
+							if (rows.length > 0) {
+		                        $.messager.confirm('确定操作', '您真的要删除选择的'+rows.length+'记录吗？', function(flag){
+		                            if (flag) {
+		                                var ids = [];
+		                                for (var i = 0; i < rows.length; i++) {
+		                                    ids.push(rows[i].id);
+		                                }
+										ids = ids.join(',');
+										//delete
+										$.ajax({
+											type : 'POST',
+											url:  '${pageContext.request.contextPath}/roleAction!delete.action',
+											data:{
+												ids:ids //异步传入的数据
+											},
+											beforeSend: function(){
+												datagrid.datagrid('loading');//显示进度提示信息
+											},
+											success:function(data){//这里的data是后台返回的值或数据，本例中data返回影响的数据记录行数
+												var obj = jQuery.parseJSON(data);
+												if(obj.success){
+													datagrid.datagrid('loaded');//隐藏进度提示信息
+													datagrid.datagrid('load');//加载当前页
+													datagrid.datagrid('clearChecked');//所有行取消checkbox
+													$.messager.show({
+													msg: obj.msg,
+													});
+												};
+											},
+										});
+		                            };
+		                        });
+		                    }else {
+		                        $.messager.alert('提示', '请勾选至少一行数据', 'info');
+		                    };
+						},
+						edit:function(){
+							var rows = datagrid.datagrid("getChecked"); //选择了checkbox的行
+							console.info('role_edit');
+							if (rows.length == 1) {
+								editDialog=$('<div />').dialog({
+									title: '角色修改',    
+									iconCls:'icon-add',
+									modal:true,
+									resizable:true,
+									width: 500,    
+									height: 300,    
+									closed: false,    
+									cache: false,    
+									//href: '${pageContext.request.contextPath}/jsp/admin/roleEdit.jsp',
+									href : lh.contextPath+'/jsp/admin/roleEdit.jsp',
+									buttons:[{
+										text:'修改',
+										iconCls:'icon-add',
+										handler:function(){
+											editRole();
+										}
+									},{
+										text:'取消',
+										iconCls:'icon-cancel',
+										handler:function(){
+											editDialog.dialog('destroy');
+										}
+									}],
+									//注意如果使用动态加载dialog后一定要写onClose事件，否则可能造成关闭不销毁DOM节点的问题，造成内存问题
+									onClose:function(){
+										$(this).dialog('destroy');
+									},
+									onLoad :function(){
+										$('#jsp_admin_roleEdit_editForm').form('load',rows[0]);
+									}
+								});
+							}else{
+								$.messager.alert('提示', '请勾选一行数据进行编辑', 'info');
+							}
+						},
+						unCheck :function(){
+							datagrid.datagrid("clearChecked");
+						}
+					},
+			datagrid
+					.datagrid(
+							{
+								url : 'userAction!find.action',
+								fit : true,
+								title : '用户列表',
+								iconCls : 'icon-search',
+								striped : true, //显示记录斑马线（单双行记录分色显示）
+								nowrap : false,//是否禁止文字自动换行 true禁止，false不禁止，适用中文
+								rownumbers : true,//是否显示行号
+								showHeader : true,//显示头
+								showFooter : true,//显示页脚
+								loadMsg : "努力加载中。。。",//加载时显示的信息,默认有可以不定义
+								fitColmums : true,//分隔列
+								idField : "id",//主键
+								sortName : "name",
+								setOrder : "asc",
+								resizeHandle : 'right',
+								frozenColumns : [ [
+										{
+											field : 'id',
+											title : '编号',
+											checkbox : true
+										},
+										{
+											field : 'name',
+											title : '登录名',
+											width : 100,
+											sortable : true,
+											formatter : function(value, row,
+													index) {
+												return '<span title="['+row.id+']'+value+'">'
+														+ value + '</span>';
+											},
+											editor : {
+												type : 'validatebox',
+												options : {
+													required : true,
+													missingMessage : '请输入用户名'
+												}
+											}
+										} ] ],
+								border : false,
+								columns : [ [ {
+									field : 'pwd',
+									title : '密码',
+									sortable : true,
+									//hidden:true,
+									width : 100,
+									align : 'right'
+								}, {
+									field : 'createdatetime',
+									title : '建立时间',
+									width : 150,
+									sortable : true,
+									align : 'center'
+								}, {
+									field : 'modifydatetime',
+									title : '修改时间',
+									sortable : true,
+									width : 150,
+									align : 'center'
+								} ] ],
+								toolbar : [ {
+									text : "增加",
+									iconCls : "icon-add",
+									handler : function() {
+										admin_role_obj.add();
+									}
+								}, '-', {
+									text : "删除",
+									iconCls : "icon-remove",
+									handler : function() {
+										admin_role_obj.remove();
+									}
+								}, '-', {
+									text : "修改",
+									iconCls : "icon-edit",
+									handler : function() {
+										admin_role_obj.edit();
+									}
+								}, '-', {
+									text : "保存",
+									iconCls : "icon-save",
+									handler : function() {
+										admin_role_obj.save();
+									}
+								}, '-', {
+									text : "取消编辑",
+									iconCls : "icon-redo",
+									handler : function() {
+										admin_role_obj.redo();
+									}
+								}, '-' ],
+								pagination : true,//页面显示导航条
+								pageSize : 10,//和pageList互相呼应
+								pageList : [ 10, 20, 30, 40, 50 ],//和pageSize互相呼应
+								pageNumber : 1, //起始页
+								pagePosition : 'bottom',//页导航条位置 top 上,bottom 下,both 上下 默认bottom
+								onLoadSuccess : function(data) {
+									if (data.total == 0) {
+										var body = $(this).data().datagrid.dc.body2;
+										body
+												.find('table tbody')
+												.append(
+														'<tr><td width="'
+																+ body.width()
+																+ '" style="height: 25px; text-align: center;">没有数据  </td></tr>');
+									}
+								},
+							}).datagrid("columnMoving");
+			//使datagrid的header部分居中
+			$(".datagrid-header div").css("textAlign", 'center');
+			;
+		});
+	</script>
+	<div id="jsp_admin_role_layout1" class="easyui-layout"
+		data-options="fit:true,border:false" style="width:600px;height:400px;">
+		<div
+			data-options="region:'north',title:'查询条件',split:true,border:false"
+			style="height:65px;">
+			<form id="ff1" style="padding:5px 10px;background:#eee;" method="post">   
+		       	 用户名：<input type="text" class="textbox" name="name" style="width:110px" />
+		       	 创建时间从：<input type="text" class="easyui-datetimebox" name="date_from" data-options="" style="width:150px">
+		       	 <input class="Wdate" type="text" onClick="WdatePicker()">  
+		        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="obj.search();">查询</a> 
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo', plain:true" onclick="obj.clean();">清空</a>
+			</form>  
+		</div>
+		<div data-options="region:'center', border:false"
+			style="background:#eee;">
+			<table id="jsp_admin_role_datagrid1">
+			</table>
+		</div>
+	</div>
+  </body>
+</html>

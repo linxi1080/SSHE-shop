@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" 
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="public" namespace="/common" extends="struts-default" >
+		<interceptors>
+	    	<interceptor-stack name="defaultStack">
+	        	<interceptor-ref name="defaultStack"></interceptor-ref>
+	        </interceptor-stack>
+	    </interceptors>
+	    <!-- 全局拦截器栈 -->
+	    <default-interceptor-ref name="defaultStack"></default-interceptor-ref>
+	</package>
+</struts>

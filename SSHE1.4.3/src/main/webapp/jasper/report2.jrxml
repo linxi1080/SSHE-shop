@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="850f5810-4800-4de1-a40b-36705bfc9307">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select a.id,a.createdatetime,a.ip,a.loginname,a.type
+from tonline a]]>
+	</queryString>
+	<field name="ID" class="java.lang.String"/>
+	<field name="CREATEDATETIME" class="java.sql.Timestamp"/>
+	<field name="IP" class="java.lang.String"/>
+	<field name="LOGINNAME" class="java.lang.String"/>
+	<field name="TYPE" class="java.lang.String"/>
+	<variable name="ID_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{ID}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="12" y="2" width="100" height="20" uuid="a391dccd-491d-47b2-a04b-6e2bebb90202"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="129" y="2" width="100" height="20" uuid="d4245f8e-bcad-4d27-86fd-a609a3d20410"/>
+				<text><![CDATA[CREATEDATETIME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="256" y="2" width="100" height="20" uuid="c4324e5f-5411-4a43-8f78-37d4609d916e"/>
+				<text><![CDATA[IP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="2" width="100" height="20" uuid="c41a3df3-491c-46a4-83e7-e6d95834f7c9"/>
+				<text><![CDATA[LOGINNAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="483" y="2" width="58" height="20" uuid="743f4b7a-33c2-4f42-8f15-f5b355bc5981"/>
+				<text><![CDATA[TYPE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement x="12" y="4" width="100" height="20" uuid="10e2b754-06bf-4c22-8a07-73d56c5569e7"/>
+				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="4" width="100" height="20" uuid="cd1a3375-7893-4bca-8efb-359a32416698"/>
+				<textFieldExpression><![CDATA[$F{CREATEDATETIME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="256" y="4" width="100" height="20" uuid="03e2a6fe-bc37-44a4-a671-5081a149bc1c"/>
+				<textFieldExpression><![CDATA[$F{IP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="371" y="4" width="100" height="20" uuid="7b2fb69f-f9f7-4207-a5a6-d484b42d3b9d"/>
+				<textFieldExpression><![CDATA[$F{LOGINNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="483" y="4" width="58" height="20" uuid="14a3d5ed-0b97-412d-80f0-bff346ea3a2e"/>
+				<textFieldExpression><![CDATA[$F{TYPE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

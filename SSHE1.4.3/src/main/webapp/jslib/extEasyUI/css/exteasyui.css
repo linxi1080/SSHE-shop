@@ -1,0 +1,175 @@
+/* 获得焦点时边框用红色 */
+.focus, input:focus, select:focus, textarea:focus {
+	outline:red solid 1px;
+}
+
+/**
+ *	层浮动
+ */
+.left{ float:left; display:inline;}
+.right{	float:right; display:inline;}
+/**
+*body字体
+*/
+body{
+	font-size:9px;
+	font-family:宋体;
+}
+/*
+ *	动态按钮效果
+ */
+button, input[type=button]{
+	border: 1px solid #7F9DB9;
+    padding: 2px;
+	background:#ecf1fb;
+	
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#FFFFFF, EndColorStr=#9DBCEA);
+}
+
+button:hover, input[type=button]:hover {
+    border: 1px solid #ff0000;
+    padding: 2px;	
+	background:lightblue;
+	
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#4444FA);    
+    cursor: pointer;
+}
+
+.table-edit .title{	
+	background-color:#CCF;
+}
+/**
+设置title 背景图
+*/
+.title {
+	background:url('../image/title.png') repeat-x;
+	height:28px;
+}
+
+#topbar{padding:0 5px;}
+#topbar-system{padding-top:4px;}
+.title-text .text{
+	padding-top: 16px;
+	color:#4e5766;
+	font-weight:bold;
+	text-align:center;
+}
+.left img{
+	padding-top: 4px;
+}
+.left img{
+	width: 20px;
+}
+#topbar-info{
+	padding-top: 4px;
+	font-size:14px;
+	font-family:宋体;
+}
+.topbar-info{
+	padding-top: 5px;
+	font-size:12px;
+	font-family:宋体;
+}
+.footer{
+	text-align:center;
+	/* color:#15428B; */ 
+	color: #4e5766;
+	/* margin:0px; */
+	margin: 0px auto;
+	/* padding:0px; */
+	padding: 6px 0px 0px 0px;
+	line-height:23px; 
+	font-weight:bold;
+	font-size:12px;
+	font-family:微软雅黑;
+}
+/*table css begin*/
+/**
+* 对table 做样式设计
+*/
+.table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.table th,.table td {
+	border: 1px solid #8CACBB;
+	padding: 0.3em 0.7em;
+	text-align: left;
+}
+.table th {
+	background: #F8F8F8;
+	text-align: center;
+}
+.table thead th {
+	text-align: center;
+}
+.table tbody th {
+	text-align: right;
+}
+.table tr:hover {
+	background-color: #f6fafd;
+}
+.table td:hover {
+	background-color: #f9feff;
+}
+/*table css end*/
+.input-yzm{
+	width: 60px;
+}
+/*验证码图片样式*/
+.verifyCode {
+	margin-right: 1px; 
+	vertical-align: middle;
+	width: 90px;
+	height: 26px;
+	border: 0px solid #000;
+}
+/*input样式*/
+.input {
+	width: 235px;
+	height: 26px;
+	border: 1px solid #d9d9d9;
+	padding-top: 4px;
+	padding-left: 8px;
+}
+/*验证码输入框样式*/
+.yzm {
+	width: 90px;
+	height: 26px;
+	border: 1px solid #d9d9d9;
+	vertical-align: middle; 
+	margin-right: 65px;
+	padding-top: 4px;
+	padding-left: 8px;
+}
+td{
+	font-size: 12px;
+	font-family:宋体;
+}
+.datagrid-cell,
+.datagrid-cell-group,
+.datagrid-header-rownumber,
+.datagrid-cell-rownumber {
+  margin: 0;
+  padding: 3px 4px;
+  white-space: nowrap;
+  word-wrap: normal;
+  overflow: hidden;
+  height: 18px;
+  line-height: 18px;
+  font-size: 12px;
+}
+.dialog-content th{
+	font-size:14px;
+	padding:5px;
+	text-align:right;
+	font-weight:normal;
+}
+th{
+	font-size:14px;
+	padding:5px;
+	text-align:right;
+	font-weight:normal;
+}
+.dialog-content td{padding-bottom:6px;}
+td{padding-bottom:6px;}

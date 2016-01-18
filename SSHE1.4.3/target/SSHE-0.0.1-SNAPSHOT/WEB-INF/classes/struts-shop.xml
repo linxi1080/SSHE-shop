@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" 
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="admin" namespace="/admin/setting" extends="struts-default" >
+	    <interceptors>
+	    <!-- session拦截器 -->
+	    <!-- 
+		<interceptor name="sessionInterceptor" class="lh.interceptor.SessionInterceptor" />
+    <interceptor-stack name="sessionStack">
+      <interceptor-ref name="sessionInterceptor" >
+      -->
+        <!-- doNotNeedSessionAndSecurity_ 开头的和doNotNeedSession_ 开头的方法不拦截 -->
+        <!-- 
+        <param name="excludeMethods">login*,logout*,doNotNeedGrant_*</param>
+      </interceptor-ref>
+    </interceptor-stack>
+        -->
+      <!-- 权限拦截器 -->
+      <!-- 
+    <interceptor name="securityInterceptor" class="lh.interceptor.SecurityInterceptor" />
+      <interceptor-stack name="securityStack">
+        <interceptor-ref name="sessionStack"></interceptor-ref>
+        <interceptor-ref name="securityInterceptor">
+        -->
+           <!-- 设置需要拦截的方法，多个以逗号隔开 -->
+           <!-- 
+           <param name="includeMethods">getALL,getPart,listUser</param> 
+            -->
+            <!-- login开头和get开头的方法不拦截  -->
+            <!-- 注意要在同一个包下  basePackage-->
+            <!-- get*,login*,find*,edit*,add*,logout*, -->
+            <!-- 
+          <param name="excludeMethods">login*,logout*,doNotNeedGrant_*</param>
+             -->
+          <!-- login*,get*,find*,edit* -->
+          <!-- 
+        </interceptor-ref>
+        <interceptor-ref name="defaultStack"></interceptor-ref>
+      </interceptor-stack>
+           -->
+           <interceptor-stack name="securityStack">
+           		<interceptor-ref name="defaultStack"></interceptor-ref>
+           </interceptor-stack>
+    </interceptors>
+    <!-- 全局拦截器栈 -->
+    <default-interceptor-ref name="securityStack"></default-interceptor-ref>
+	</package>
+</struts>
